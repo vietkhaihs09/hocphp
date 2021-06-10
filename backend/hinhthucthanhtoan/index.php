@@ -5,27 +5,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ</title>
+    <title>hinh thu thanh toan</title>
     <!-- style start -->
     <?php
-        include_once __DIR__.'/layouts/styles.php'
+        include_once __DIR__.'/../layouts/styles.php'
     ?>
     <!-- style end -->
 </head>
 
 <body>
     <?php
-        include_once __DIR__.'/dbconnect.php';
+        include_once __DIR__.'/../dbconnect.php';
     ?>
     <div class="container-fluid">
        <?php 
-            include_once __DIR__.'/layouts/partials/header.php';
+            include_once __DIR__.'/../layouts/partials/header.php';
        ?>
 
         <div class="row">
             <!-- start sidebar -->
             <?php 
-            include_once __DIR__.'/layouts/partials/sidebar.php';
+            include_once __DIR__.'/../layouts/partials/sidebar.php';
        ?>
             <!-- end sidebar -->
 
@@ -37,8 +37,8 @@
        
 
         // 2. Chuẩn bị câu truy vấn $sql
-        $stt = 1;
-        $sql = "select * from `loaisanpham`";
+       
+        $sql = "select * from `hinhthucthanhtoan`";
 
         // 3. Thực thi câu truy vấn SQL để lấy về dữ liệu
         $result = mysqli_query($conn, $sql);
@@ -46,43 +46,37 @@
         // 4. Khi thực thi các truy vấn dạng SELECT, dữ liệu lấy về cần phải phân tích để sử dụng
         // Thông thường, chúng ta sẽ sử dụng vòng lặp while để duyệt danh sách các dòng dữ liệu được SELECT
         // Ta sẽ tạo 1 mảng array để chứa các dữ liệu được trả về
-        $ds_loaisanpham = [];
+        $ds = [];
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-          $ds_loaisanpham[] = array(
-            'lsp_ma' => $row['lsp_ma'],
-            'lsp_ten' => $row['lsp_ten'],
-            'lsp_mota' => $row['lsp_mota'],
+          $ds[] = array(
+            'httt_ma'=>$row['httt_ma'],
+            'httt_ten'=>$row['httt_ten']
           );
         }
         ?>
+        <a href="create.php" class="btn btn-outline-primary">Thêm mới</a>
          <table class="table table-bordered table-hover mt-2">
-          <thead class="thead-dark">
+         
             <tr>
-              <th>Mã loại sản phẩm</th>
-              <th>Tên loại sản phẩm</th>
-              <th>Mô tả loại sản phẩm</th>
+              <th>Hình thức thanh toán mã</th>
+              <th>Hình thức thanh toán tên</th>
+              
               <th>Hành động</th>
             </tr>
-          </thead>
+       
           <tbody>
-            <?php foreach ($ds_loaisanpham as $loaisanpham) : ?>
-              <tr>
-                <td><?= $loaisanpham['lsp_ma'] ?></td>
-                <td><?= $loaisanpham['lsp_ten'] ?></td>
-                <td><?= $loaisanpham['lsp_mota'] ?></td>
-                <td>
-                  <!-- Nút sửa, bấm vào sẽ hiển thị form hiệu chỉnh thông tin dựa vào khóa chính `lsp_ma` -->
-                  <a href="edit.php?lsp_ma=<?= $loaisanpham['lsp_ma'] ?>" class="btn btn-warning">
-                    <span data-feather="edit"></span> Sửa
-                  </a>
+          <tr>
+           <?php foreach ($ds as $ht):?>
 
-                  <!-- Nút xóa, bấm vào sẽ xóa thông tin dựa vào khóa chính `lsp_ma` -->
-                  <a href="delete.php?lsp_ma=<?= $loaisanpham['lsp_ma'] ?>" class="btn btn-danger">
-                    <span data-feather="delete"></span> Xóa
-                  </a>
+                <td><?= $ht['httt_ma']?></td>
+                <td><?= $ht['httt_ten']?></td>
+                <td>
+                    <a href="edit.php" class="btn btn-primary">Sửa</a>
+                    <a href="delete.php" class="btn btn-danger">Xóa</a>
                 </td>
-              </tr>
-            <?php endforeach; ?>
+
+            </tr>
+           <?php endforeach?>
           </tbody>
         </table>
 
@@ -93,7 +87,7 @@
         <div class="row">
             <!-- start footer -->
             <?php 
-            include_once __DIR__.'/layouts/partials/footer.php';
+            include_once __DIR__.'/../layouts/partials/footer.php';
        ?>
             <!-- end footer -->
         </div>
